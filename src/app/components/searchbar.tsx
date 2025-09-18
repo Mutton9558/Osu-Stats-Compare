@@ -1,7 +1,21 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 
-const SearchBar = () => {
+const SearchBar = ({ onSearch }: { onSearch: (username: string) => void }) => {
+  const [input, setInput] = useState("");
+
+  const handleSearch = () => {
+    if (input.trim()) {
+      onSearch(input.trim());
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="space-y-4 bg-amber-500 rounded-lg p-6 w-full max-w-lg">
       <div className="flex gap-2">

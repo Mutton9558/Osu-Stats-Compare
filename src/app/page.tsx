@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
+import SearchBar from "./components/searchbar";
+import UserStats from "./components/userstats";
 
 export default function Home() {
   interface userStatistics {
@@ -61,15 +63,13 @@ export default function Home() {
     console.log(users);
   }
 
+  const [username, setUsername] = useState("");
   return (
-    <div>
-      <h1>Hello</h1>
-      <button
-        className="w-32 h-8 bg-gray-300 border-gray-300 text-black justify-center items-center flex rounded-lg"
-        onClick={() => getData("MuttonIsTrash")}
-      >
-        + Add User
-      </button>
+    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+        <SearchBar onSearch={setUsername} />
+        {username && <UserStats username={username} />}
+      </main>
     </div>
   );
 }

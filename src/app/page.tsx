@@ -63,12 +63,11 @@ export default function Home() {
     console.log(users);
   }
 
-  const [username, setUsername] = useState("");
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <SearchBar onSearch={setUsername} />
-        {username && <UserStats username={username} />}
+        <SearchBar onSearch={getData} />
+        {users.length > 0 && <UserStats user={users[0]} />}
       </main>
     </div>
   );

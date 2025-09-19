@@ -9,6 +9,7 @@ export default function Home() {
     countryCode: string;
     joinDate: string;
     username: string;
+    previous_usernames: string[];
     level: number;
     globalRank: number;
     countryRank: number;
@@ -26,7 +27,7 @@ export default function Home() {
   }
 
   const [users, setUsers] = useState<userStatistics[]>([]);
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   const [searchWarningMsg, setSearchWarningMsg] = useState<HTMLElement | null>(
     null
   );
@@ -37,71 +38,74 @@ export default function Home() {
     setSearchWarningMsg(object);
   }, []);
 
-  useEffect(() => {
-    console.log(username);
+  async function getData(username: string) {
     if (searchWarningMsg) {
       if (username == "" || username == "undefined" || username == null) {
         console.log("Not valid user");
         searchWarningMsg.innerHTML = "Add a user!";
       } else {
-        if (users.length == 1 && users[0].username == username) {
+        // check to see if user entered an already added user (also takes account previous usernames)
+        if (
+          users.length == 1 &&
+          (users[0].username.toLowerCase() == username.toLowerCase() ||
+            users[0].previous_usernames
+              .map((e) => e.toLowerCase())
+              .includes(username.toLowerCase()))
+        ) {
           console.log("User already exists");
           searchWarningMsg.innerHTML = "User already added!";
         } else if (users.length >= 2) {
-          console.log("You can only add up to two players!");
           searchWarningMsg.innerHTML = "You can only add up to two players!";
         } else {
-          async function getData(username: string) {
-            try {
-              const query = await fetch("/api/compare", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ user: username }),
-              });
+          try {
+            const query = await fetch("/api/compare", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ user: username }),
+            });
 
-              const data = await query.json();
+            const data = await query.json();
 
-              if (!data || !data.statistics) {
-                throw new TypeError(
-                  "Invalid response: missing statistics field"
-                );
-              }
+            if (!data || !data.statistics) {
+              throw new TypeError("Invalid response: missing statistics field");
+            }
 
-              let newUser: userStatistics = {
-                avatarUrl: data.avatar_url,
-                countryCode: data.country_code,
-                joinDate: data.join_date,
-                username: data.username,
-                level: data.statistics.level.current,
-                globalRank: data.statistics.global_rank,
-                countryRank: data.statistics.country_rank,
-                performancePoints: data.statistics.pp,
-                accuracy: data.statistics.hit_accuracy,
-                playTime: data.statistics.play_time,
-                playCount: data.statistics.play_count,
-                totalScore: data.statistics.total_score,
-                maxCombo: data.statistics.maximum_combo,
-                ssCount: data.statistics.grade_counts.ss,
-                sshCount: data.statistics.grade_counts.ssh,
-                sCount: data.statistics.grade_counts.s,
-                shCount: data.statistics.grade_counts.sh,
-                aCount: data.statistics.grade_counts.a,
-              };
-              console.log(newUser);
-              setUsers((prev) => [...prev, newUser]);
-            } catch (err) {
-              console.log(err);
-              if (searchWarningMsg) {
-                searchWarningMsg.innerHTML = "Please add a real user!";
-              }
+            let newUser: userStatistics = {
+              avatarUrl: data.avatar_url,
+              countryCode: data.country_code,
+              joinDate: data.join_date,
+              username: data.username,
+              previous_usernames: data.previous_usernames,
+              level: data.statistics.level.current,
+              globalRank: data.statistics.global_rank,
+              countryRank: data.statistics.country_rank,
+              performancePoints: data.statistics.pp,
+              accuracy: data.statistics.hit_accuracy,
+              playTime: data.statistics.play_time,
+              playCount: data.statistics.play_count,
+              totalScore: data.statistics.total_score,
+              maxCombo: data.statistics.maximum_combo,
+              ssCount: data.statistics.grade_counts.ss,
+              sshCount: data.statistics.grade_counts.ssh,
+              sCount: data.statistics.grade_counts.s,
+              shCount: data.statistics.grade_counts.sh,
+              aCount: data.statistics.grade_counts.a,
+            };
+            console.log(newUser);
+            searchWarningMsg.innerHTML = "";
+            setUsers((prev) => [...prev, newUser]);
+          } catch (err) {
+            console.log(err);
+            if (searchWarningMsg) {
+              searchWarningMsg.innerHTML = "Please add a real user!";
             }
           }
-
-          getData(username);
         }
       }
+    } else {
+      console.log("Can't get warning message element!");
     }
-  }, [username]);
+  }
 
   // debugging
   useEffect(() => {
@@ -124,7 +128,7 @@ export default function Home() {
           className="text-red-400 font-mono tracking-wide w-full flex items-center justify-center"
           id="search-warning"
         ></p>
-        <SearchBar onSearch={setUsername} />
+        <SearchBar onSearch={getData} />
         {/* {username && <UserStats username={username} />} */}
       </main>
     </div>

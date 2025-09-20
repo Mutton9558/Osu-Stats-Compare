@@ -43,7 +43,7 @@ export default function UserStats({ user }: UserStatsProps) {
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-xl font-semibold">{user.username}</h3>
                 <img
-                  src={`https://flagcdn.com/w20/${user.countryCode.toLowerCase()}.png`}
+                  src={`https://flagcdn.com/w80/${user.countryCode.toLowerCase()}.png`}
                   alt="Country Flag"
                   className="w-6 h-4 object-cover rounded"
                 />

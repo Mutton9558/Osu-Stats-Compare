@@ -145,7 +145,7 @@ export default function Home() {
           {users.length > 0 && (
             <button
               onClick={resetUsers}
-              className="p-2 w-2xs bg-red-500 text-white rounded-lg font-mono cursor-pointer"
+              className="p-2 w-2xs bg-red-500 hover:bg-red-700 text-white rounded-lg font-mono cursor-pointer"
             >
               Reset
             </button>

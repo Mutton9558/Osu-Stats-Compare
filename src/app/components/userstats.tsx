@@ -25,13 +25,28 @@ interface userStatistics {
 
 interface UserStatsProps {
   user: userStatistics;
+  comparisonData: {
+    accuracy: boolean;
+    playCount: boolean;
+    totalScore: boolean;
+    playTime: boolean;
+    maxCombo: boolean;
+  } | null;
 }
 
-export default function UserStats({ user }: UserStatsProps) {
+export default function UserStats({ user, comparisonData }: UserStatsProps) {
+  const styleByStats = (
+    stat: keyof NonNullable<UserStatsProps["comparisonData"]>
+  ) => {
+    if (!comparisonData) return "text-black dark:text-white";
+    return comparisonData[stat] === true
+      ? "text-green-500 font-bold"
+      : "text-red-500";
+  };
   return (
     <div>
       <div className="w-96">
-        <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full">
+        <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full font-mono">
           {/* User Header */}
           <div className="flex items-center gap-4 mb-6">
             <img
@@ -93,26 +108,36 @@ export default function UserStats({ user }: UserStatsProps) {
               label="Accuracy"
               value={user.accuracy.toFixed(2) + "%"}
               icon={<Target className="w-4 h-4" />}
+              className={`${styleByStats("accuracy")}`}
+              state={comparisonData ? comparisonData.accuracy : null}
             />
             <StatItem
               label="Play Count"
               value={user.playCount.toLocaleString()}
               icon={<Play className="w-4 h-4" />}
+              className={`${styleByStats("playCount")}`}
+              state={comparisonData ? comparisonData.playCount : null}
             />
             <StatItem
               label="Total Score"
               value={user.totalScore.toLocaleString()}
               icon={<TrendingUp className="w-4 h-4" />}
+              className={`${styleByStats("totalScore")}`}
+              state={comparisonData ? comparisonData.totalScore : null}
             />
             <StatItem
               label="Play Time"
               value={user.playTime.toLocaleString()}
               icon={<Clock className="w-4 h-4" />}
+              className={`${styleByStats("playTime")}`}
+              state={comparisonData ? comparisonData.playTime : null}
             />
             <StatItem
               label="Max Combo"
               value={user.maxCombo}
               icon={<Star className="w-4 h-4" />}
+              className={`${styleByStats("maxCombo")}`}
+              state={comparisonData ? comparisonData.maxCombo : null}
             />
           </div>
 

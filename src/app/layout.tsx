@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Osu Stats Comparer",
-  description: "Compares 2 players osu statistics",
+  description: "Compares 2 players' osu! statistics",
 };
 
 export default function RootLayout({

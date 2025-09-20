@@ -32,7 +32,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
         </div>
         <button
           onClick={() => handleSearch(input)}
-          className="px-6 border-2 border-black rounded-lg bg-black text-white cursor-pointer"
+          className="px-6 border-2 border-black rounded-lg bg-black hover:bg-gray-700 text-white cursor-pointer"
         >
           <div className="flex items-center gap-2">
             <Plus className="w-5 h-5" />

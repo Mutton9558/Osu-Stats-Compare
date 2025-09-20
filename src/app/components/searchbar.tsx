@@ -1,20 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { Plus } from 'lucide-react';
 
-const SearchBar = ({ onSearch }: { onSearch: (username: string) => void }) => {
+type SearchBarProps = {
+  onSearch: (username: string) => void;
+};
+
+const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [input, setInput] = useState("");
 
-  const handleSearch = () => {
-    if (input.trim()) {
+  const handleSearch = (input: string) => {
+    console.log(input);
+    if (input.trim() !== "") {
       onSearch(input.trim());
+      setInput("");
     }
   };
-
-  // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.key === "Enter") {
-  //     handleSearch();
-  //   }
-  // };
 
   return (
     <div className="space-y-4 bg-pink-400 rounded-lg p-6 w-full max-w-lg font-mono">
@@ -22,27 +23,23 @@ const SearchBar = ({ onSearch }: { onSearch: (username: string) => void }) => {
         <div className="relative flex-1">
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <input
-            className="border-2 border-black pl-2 pr-2 rounded-md w-72"
             type="text"
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch(input)}
             placeholder="Enter osu! username..."
+            value={input}
+            className='w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white text-black'
           />
         </div>
         <button
-          onClick={handleSearch}
+          onClick={() => onSearch(input)}
           className="px-6 border-2 border-black rounded-lg bg-black text-white cursor-pointer"
         >
-          Search
+          <div className="flex items-center gap-2">
+            <Plus className="w-5 h-5" />
+            Add Player
+          </div>
         </button>
-      </div>
-
-      <div className="text-sm text-muted-foreground">
-        <p>
-          Try searching for: <strong>cookiezi</strong>,{" "}
-          <strong>whitecat</strong>, <strong>vaxei</strong>,{" "}
-          <strong>mrekk</strong>, or <strong>badewanne3</strong>
-        </p>
       </div>
     </div>
   );

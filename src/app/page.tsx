@@ -128,8 +128,22 @@ export default function Home() {
           className="text-red-400 font-mono tracking-wide w-full flex items-center justify-center"
           id="search-warning"
         ></p>
-        <SearchBar onSearch={getData} />
-        {/* {username && <UserStats username={username} />} */}
+        <div className="flex flex-col gap-6 w-full items-center">
+          <SearchBar onSearch={getData} />
+          {users.length > 0 && (
+            <button
+              onClick={() => setUsers([])}
+              className="p-2 w-2xs bg-red-500 text-white rounded-lg font-mono cursor-pointer"
+            >
+              Reset
+            </button>
+          )}
+          <div className="flex flex-row gap-8 w-full items-center">
+            {users.slice(0, 2).map((user, idx) => (
+              <UserStats key={user.username + idx} user={user} />
+            ))}
+          </div>
+        </div>
       </main>
     </div>
   );

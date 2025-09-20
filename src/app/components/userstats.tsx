@@ -1,6 +1,6 @@
-import React from 'react'
-import { StatItem } from './statItem'
-import { Target, Play, Star, Clock, TrendingUp } from 'lucide-react'
+import React from "react";
+import { StatItem } from "./statItem";
+import { Target, Play, Star, Clock, TrendingUp } from "lucide-react";
 
 interface userStatistics {
   avatarUrl: string;
@@ -27,11 +27,10 @@ interface UserStatsProps {
   user: userStatistics;
 }
 
-
 export default function UserStats({ user }: UserStatsProps) {
   return (
     <div>
-      <div className="">
+      <div className="w-96">
         <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full">
           {/* User Header */}
           <div className="flex items-center gap-4 mb-6">
@@ -59,11 +58,19 @@ export default function UserStats({ user }: UserStatsProps) {
           {/* Ranks */}
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="text-center p-3 bg-gray-100 rounded-lg">
-              <div className="text-2xl font-bold text-primary">#{user.globalRank.toLocaleString()}</div>
+              <div className="text-2xl font-bold text-primary">
+                {user.globalRank
+                  ? `${user.globalRank.toLocaleString()}`
+                  : "Not Ranked"}
+              </div>
               <div className="text-sm text-gray-400">Global Rank</div>
             </div>
             <div className="text-center p-3 bg-gray-100 rounded-lg">
-              <div className="text-2xl font-bold text-primary">#{user.countryRank.toLocaleString()}</div>
+              <div className="text-2xl font-bold text-primary">
+                {user.countryRank
+                  ? `${user.countryRank.toLocaleString()}`
+                  : "Not Ranked"}
+              </div>
               <div className="text-sm text-gray-400">Country Rank</div>
             </div>
           </div>
@@ -72,9 +79,11 @@ export default function UserStats({ user }: UserStatsProps) {
           <div className="mb-6 p-4 bg-gray-200 rounded-lg">
             <div className="text-center">
               <div className="text-3xl font-bold text-primary mb-1">
-                {(user.performancePoints.toFixed(2))}
+                {user.performancePoints.toFixed(2)}
               </div>
-              <div className="text-sm text-gray-400">Performance Points</div>
+              <div className="text-sm text-gray-400">
+                Performance Points (pp)
+              </div>
             </div>
           </div>
 
@@ -109,7 +118,9 @@ export default function UserStats({ user }: UserStatsProps) {
 
           {/* Grade Counts */}
           <div className="mb-6">
-            <h4 className="text-sm font-medium mb-3 text-gray-400">Grade Distribution</h4>
+            <h4 className="text-sm font-medium mb-3 text-gray-400">
+              Grade Distribution
+            </h4>
             <div className="grid grid-cols-5 gap-2 text-center">
               <div>
                 <div className="text-sm font-medium text-yellow-500">SSH</div>
@@ -136,5 +147,5 @@ export default function UserStats({ user }: UserStatsProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

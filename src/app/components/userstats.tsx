@@ -1,6 +1,7 @@
 import React from "react";
 import { StatItem } from "./statItem";
 import { Target, Play, Star, Clock, TrendingUp } from "lucide-react";
+import Image from "next/image";
 
 interface userStatistics {
   avatarUrl: string;
@@ -49,18 +50,22 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
         <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full font-mono">
           {/* User Header */}
           <div className="flex items-center gap-4 mb-6">
-            <img
+            <Image
               src={user.avatarUrl}
               alt={`${user.username}'s avatar`}
-              className="w-12 h-12 rounded-full"
+              width={48}
+              height={48}
+              className="rounded-full"
             />
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-xl font-semibold">{user.username}</h3>
-                <img
+                <Image
                   src={`https://flagcdn.com/w20/${user.countryCode.toLowerCase()}.png`}
                   alt="Country Flag"
-                  className="w-6 h-4 object-cover rounded"
+                  width={24}
+                  height={16}
+                  className="object-cover rounded"
                 />
               </div>
               <div className="flex items-center gap-4 text-xs text-gray-400">

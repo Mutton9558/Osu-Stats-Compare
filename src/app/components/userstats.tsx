@@ -77,7 +77,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
 
           {/* Ranks */}
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="text-center p-3 bg-gray-100 dark:bg-gray-500 rounded-lg">
+            <div className="text-center p-3 bg-gray-100 dark:bg-gray-500 rounded-lg hover:shadow-lg hover:shadow-gray-400">
               <div className="text-2xl font-bold text-primary dark:text-gray-100">
                 {user.globalRank
                   ? `${user.globalRank.toLocaleString()}`
@@ -85,7 +85,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
               </div>
               <div className="text-sm text-gray-400 dark:text-gray-100">Global Rank</div>
             </div>
-            <div className="text-center p-3 bg-gray-100 dark:bg-gray-500 rounded-lg">
+            <div className="text-center p-3 bg-gray-100 dark:bg-gray-500 rounded-lg hover:shadow-lg hover:shadow-gray-400">
               <div className="text-2xl font-bold text-primary dark:text-gray-100">
                 {user.countryRank
                   ? `${user.countryRank.toLocaleString()}`
@@ -96,7 +96,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
           </div>
 
           {/* Performance Points */}
-          <div className="mb-6 p-4 bg-gray-200  dark:bg-gray-500 rounded-lg">
+          <div className="mb-6 p-4 bg-gray-200  dark:bg-gray-500 rounded-lg hover:shadow-lg hover:shadow-gray-400">
             <div className="text-center">
               <div className="text-3xl font-bold text-primary mb-1 dark:text-gray-100">
                 {user.performancePoints.toFixed(2)}

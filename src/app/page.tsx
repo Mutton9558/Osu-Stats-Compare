@@ -126,9 +126,9 @@ export default function Home() {
   }
 
   return (
-    <div className="font-sans flex items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="bg-white dark:bg-gray-800 font-sans flex items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[16px] row-start-2 justify-center items-center sm:items-start">
-        <h1 className="w-full flex items-center justify-center font-mono text-2xl tracking-wide">
+        <h1 className="w-full flex items-center justify-center font-mono text-2xl tracking-wide text-white rounded-lg">
           Osu Stats Comparer
         </h1>
         <p

@@ -1,6 +1,7 @@
 import React from "react";
 import { StatItem } from "./statItem";
 import { Target, Play, Star, Clock, TrendingUp } from "lucide-react";
+import Image from "next/image";
 
 interface userStatistics {
   avatarUrl: string;
@@ -25,27 +26,46 @@ interface userStatistics {
 
 interface UserStatsProps {
   user: userStatistics;
+  comparisonData: {
+    accuracy: boolean;
+    playCount: boolean;
+    totalScore: boolean;
+    playTime: boolean;
+    maxCombo: boolean;
+  } | null;
 }
 
-export default function UserStats({ user }: UserStatsProps) {
+export default function UserStats({ user, comparisonData }: UserStatsProps) {
+  const styleByStats = (
+    stat: keyof NonNullable<UserStatsProps["comparisonData"]>
+  ) => {
+    if (!comparisonData) return "text-black dark:text-white";
+    return comparisonData[stat] === true
+      ? "text-green-500 font-bold"
+      : "text-red-500";
+  };
   return (
     <div>
       <div className="w-96">
-        <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full">
+        <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full font-mono">
           {/* User Header */}
-          <div className="flex items-center gap-4 mb-6">
-            <img
+          <div className="flex items-center gap-4 mb-6 dark:text-white rounded-lg">
+            <Image
               src={user.avatarUrl}
               alt={`${user.username}'s avatar`}
-              className="w-12 h-12 rounded-full"
+              width={48}
+              height={48}
+              className="rounded-full"
             />
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-xl font-semibold">{user.username}</h3>
-                <img
-                  src={`https://flagcdn.com/w80/${user.countryCode.toLowerCase()}.png`}
+                <Image
+                  src={`https://flagcdn.com/w20/${user.countryCode.toLowerCase()}.png`}
                   alt="Country Flag"
-                  className="w-6 h-4 object-cover rounded"
+                  width={24}
+                  height={16}
+                  className="object-cover rounded"
                 />
               </div>
               <div className="flex items-center gap-4 text-xs text-gray-400">
@@ -93,26 +113,36 @@ export default function UserStats({ user }: UserStatsProps) {
               label="Accuracy"
               value={user.accuracy.toFixed(2) + "%"}
               icon={<Target className="w-4 h-4" />}
+              className={`${styleByStats("accuracy")}`}
+              state={comparisonData ? comparisonData.accuracy : null}
             />
             <StatItem
               label="Play Count"
               value={user.playCount.toLocaleString()}
               icon={<Play className="w-4 h-4" />}
+              className={`${styleByStats("playCount")}`}
+              state={comparisonData ? comparisonData.playCount : null}
             />
             <StatItem
               label="Total Score"
               value={user.totalScore.toLocaleString()}
               icon={<TrendingUp className="w-4 h-4" />}
+              className={`${styleByStats("totalScore")}`}
+              state={comparisonData ? comparisonData.totalScore : null}
             />
             <StatItem
               label="Play Time"
               value={user.playTime.toLocaleString()}
               icon={<Clock className="w-4 h-4" />}
+              className={`${styleByStats("playTime")}`}
+              state={comparisonData ? comparisonData.playTime : null}
             />
             <StatItem
               label="Max Combo"
               value={user.maxCombo}
               icon={<Star className="w-4 h-4" />}
+              className={`${styleByStats("maxCombo")}`}
+              state={comparisonData ? comparisonData.maxCombo : null}
             />
           </div>
 
@@ -124,23 +154,23 @@ export default function UserStats({ user }: UserStatsProps) {
             <div className="grid grid-cols-5 gap-2 text-center">
               <div>
                 <div className="text-sm font-medium text-yellow-500">SSH</div>
-                <div className="text-xs">{user.sshCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.sshCount}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-yellow-400">SS</div>
-                <div className="text-xs">{user.ssCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.ssCount}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-blue-500">SH</div>
-                <div className="text-xs">{user.shCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.shCount}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-blue-400">S</div>
-                <div className="text-xs">{user.sCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.sCount}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-green-500">A</div>
-                <div className="text-xs">{user.aCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.aCount}</div>
               </div>
             </div>
           </div>

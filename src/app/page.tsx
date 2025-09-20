@@ -25,12 +25,12 @@ export default function Home() {
     shCount: number;
     aCount: number;
   }
-
   const [users, setUsers] = useState<userStatistics[]>([]);
   // const [username, setUsername] = useState("");
   const [searchWarningMsg, setSearchWarningMsg] = useState<HTMLElement | null>(
     null
   );
+  const [loadingState, setLoadingState] = useState(false);
 
   useEffect(() => {
     const object = document.getElementById("search-warning") as HTMLElement;
@@ -39,7 +39,7 @@ export default function Home() {
   }, []);
 
   async function getData(username: string) {
-    if (searchWarningMsg) {
+    if (searchWarningMsg && !loadingState) {
       if (username == "" || username == "undefined" || username == null) {
         console.log("Not valid user");
         searchWarningMsg.innerHTML = "Add a user!";
@@ -58,6 +58,7 @@ export default function Home() {
           searchWarningMsg.innerHTML = "You can only add up to two players!";
         } else {
           try {
+            setLoadingState(true);
             const query = await fetch("/api/compare", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -91,7 +92,7 @@ export default function Home() {
               shCount: data.statistics.grade_counts.sh,
               aCount: data.statistics.grade_counts.a,
             };
-            console.log(newUser);
+
             searchWarningMsg.innerHTML = "";
             setUsers((prev) => [...prev, newUser]);
           } catch (err) {
@@ -100,6 +101,7 @@ export default function Home() {
               searchWarningMsg.innerHTML = "Please add a real user!";
             }
           }
+          setLoadingState(false);
         }
       }
     } else {
@@ -107,16 +109,24 @@ export default function Home() {
     }
   }
 
-  // debugging
-  useEffect(() => {
-    if (users.length > 0) {
-      console.log("Users updated:", users);
-      console.log("First user's username:", users[0].username);
-    }
-    if (users.length > 1) {
-      console.log("Second user's username:", users[1].username);
-    }
-  }, [users]);
+  // get compare data
+  function compareUsers(index: number) {
+    console.log(index);
+    if (users.length < 2) return null;
+
+    const otherIndex = index === 0 ? 1 : 0;
+    console.log(otherIndex);
+    console.log(
+      `index: ${index} accuracy: ${users[index] > users[otherIndex]}`
+    );
+    return {
+      accuracy: users[index].accuracy > users[otherIndex].accuracy,
+      playCount: users[index].playCount > users[otherIndex].playCount,
+      totalScore: users[index].totalScore > users[otherIndex].totalScore,
+      playTime: users[index].playTime > users[otherIndex].playTime,
+      maxCombo: users[index].maxCombo > users[otherIndex].maxCombo,
+    };
+  }
 
   function resetUsers() {
     setUsers([]);
@@ -147,7 +157,11 @@ export default function Home() {
           )}
           <div className="flex flex-row gap-8 w-full justify-center items-center">
             {users.slice(0, 2).map((user, idx) => (
-              <UserStats key={user.username + idx} user={user} />
+              <UserStats
+                key={user.username + idx}
+                user={user}
+                comparisonData={compareUsers(idx)}
+              />
             ))}
           </div>
         </div>

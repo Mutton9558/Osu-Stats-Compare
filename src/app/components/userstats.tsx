@@ -48,7 +48,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
       <div className="w-96">
         <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full font-mono">
           {/* User Header */}
-          <div className="flex items-center gap-4 mb-6 dark:text-white rounded-lg">
+          <div className="flex items-center gap-4 mb-6 dark:text-white rounded-lg ">
             <img
               src={user.avatarUrl}
               alt={`${user.username}'s avatar`}
@@ -63,7 +63,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
                   className="w-6 h-4 object-cover rounded"
                 />
               </div>
-              <div className="flex items-center gap-4 text-xs text-gray-400">
+              <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-100">
                 <span>Level {user.level}</span>
                 <span>Joined {new Date(user.joinDate).getFullYear()}</span>
               </div>
@@ -72,31 +72,31 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
 
           {/* Ranks */}
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="text-center p-3 bg-gray-100 rounded-lg">
-              <div className="text-2xl font-bold text-primary">
+            <div className="text-center p-3 bg-gray-100 dark:bg-gray-500 rounded-lg">
+              <div className="text-2xl font-bold text-primary dark:text-gray-100">
                 {user.globalRank
                   ? `${user.globalRank.toLocaleString()}`
                   : "Not Ranked"}
               </div>
-              <div className="text-sm text-gray-400">Global Rank</div>
+              <div className="text-sm text-gray-400 dark:text-gray-100">Global Rank</div>
             </div>
-            <div className="text-center p-3 bg-gray-100 rounded-lg">
-              <div className="text-2xl font-bold text-primary">
+            <div className="text-center p-3 bg-gray-100 dark:bg-gray-500 rounded-lg">
+              <div className="text-2xl font-bold text-primary dark:text-gray-100">
                 {user.countryRank
                   ? `${user.countryRank.toLocaleString()}`
                   : "Not Ranked"}
               </div>
-              <div className="text-sm text-gray-400">Country Rank</div>
+              <div className="text-sm text-gray-400 dark:text-gray-100">Country Rank</div>
             </div>
           </div>
 
           {/* Performance Points */}
-          <div className="mb-6 p-4 bg-gray-200 rounded-lg">
+          <div className="mb-6 p-4 bg-gray-200  dark:bg-gray-500 rounded-lg">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-1">
+              <div className="text-3xl font-bold text-primary mb-1 dark:text-gray-100">
                 {user.performancePoints.toFixed(2)}
               </div>
-              <div className="text-sm text-gray-400">
+              <div className="text-sm text-gray-400 dark:text-gray-100">
                 Performance Points (pp)
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
 
           {/* Grade Counts */}
           <div className="mb-6">
-            <h4 className="text-sm font-medium mb-3 text-gray-400">
+            <h4 className="text-sm font-medium mb-3 text-gray-400 dark:text-gray-100">
               Grade Distribution
             </h4>
             <div className="grid grid-cols-5 gap-2 text-center">

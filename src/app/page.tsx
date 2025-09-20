@@ -111,14 +111,9 @@ export default function Home() {
 
   // get compare data
   function compareUsers(index: number) {
-    console.log(index);
     if (users.length < 2) return null;
 
     const otherIndex = index === 0 ? 1 : 0;
-    console.log(otherIndex);
-    console.log(
-      `index: ${index} accuracy: ${users[index] > users[otherIndex]}`
-    );
     return {
       accuracy: users[index].accuracy > users[otherIndex].accuracy,
       playCount: users[index].playCount > users[otherIndex].playCount,

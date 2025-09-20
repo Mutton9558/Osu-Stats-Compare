@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from 'react';
-import { Plus } from 'lucide-react';
+import React, { useState } from "react";
+import { Plus } from "lucide-react";
 
 type SearchBarProps = {
   onSearch: (username: string) => void;
@@ -9,10 +9,9 @@ type SearchBarProps = {
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [input, setInput] = useState("");
 
-  const handleSearch = (input: string) => {
-    console.log(input);
+  const handleSearch = async (input: string) => {
     if (input.trim() !== "") {
-      onSearch(input.trim());
+      await onSearch(input.trim());
       setInput("");
     }
   };
@@ -28,11 +27,11 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
             onKeyDown={(e) => e.key === "Enter" && handleSearch(input)}
             placeholder="Enter osu! username..."
             value={input}
-            className='w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white text-black'
+            className="w-full text-left pl-2 pr-12 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white text-black"
           />
         </div>
         <button
-          onClick={() => onSearch(input)}
+          onClick={() => handleSearch(input)}
           className="px-6 border-2 border-black rounded-lg bg-black text-white cursor-pointer"
         >
           <div className="flex items-center gap-2">

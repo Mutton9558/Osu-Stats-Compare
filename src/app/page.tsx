@@ -70,7 +70,7 @@ export default function Home() {
               throw new TypeError("Invalid response: missing statistics field");
             }
 
-            let newUser: userStatistics = {
+            const newUser: userStatistics = {
               avatarUrl: data.avatar_url,
               countryCode: data.country_code,
               joinDate: data.join_date,
@@ -118,8 +118,15 @@ export default function Home() {
     }
   }, [users]);
 
+  function resetUsers() {
+    setUsers([]);
+    if (searchWarningMsg) {
+      searchWarningMsg.innerHTML = "";
+    }
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="font-sans flex items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[16px] row-start-2 justify-center items-center sm:items-start">
         <h1 className="w-full flex items-center justify-center font-mono text-2xl tracking-wide">
           Osu Stats Comparer
@@ -132,13 +139,13 @@ export default function Home() {
           <SearchBar onSearch={getData} />
           {users.length > 0 && (
             <button
-              onClick={() => setUsers([])}
+              onClick={resetUsers}
               className="p-2 w-2xs bg-red-500 text-white rounded-lg font-mono cursor-pointer"
             >
               Reset
             </button>
           )}
-          <div className="flex flex-row gap-8 w-full items-center">
+          <div className="flex flex-row gap-8 w-full justify-center items-center">
             {users.slice(0, 2).map((user, idx) => (
               <UserStats key={user.username + idx} user={user} />
             ))}

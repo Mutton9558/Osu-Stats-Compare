@@ -49,7 +49,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
       <div className="w-96">
         <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full font-mono">
           {/* User Header */}
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex items-center gap-4 mb-6 dark:text-white rounded-lg">
             <Image
               src={user.avatarUrl}
               alt={`${user.username}'s avatar`}
@@ -154,23 +154,23 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
             <div className="grid grid-cols-5 gap-2 text-center">
               <div>
                 <div className="text-sm font-medium text-yellow-500">SSH</div>
-                <div className="text-xs">{user.sshCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.sshCount}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-yellow-400">SS</div>
-                <div className="text-xs">{user.ssCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.ssCount}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-blue-500">SH</div>
-                <div className="text-xs">{user.shCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.shCount}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-blue-400">S</div>
-                <div className="text-xs">{user.sCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.sCount}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-green-500">A</div>
-                <div className="text-xs">{user.aCount}</div>
+                <div className="text-xs dark:text-white rounded-lg">{user.aCount}</div>
               </div>
             </div>
           </div>

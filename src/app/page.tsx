@@ -70,7 +70,7 @@ export default function Home() {
               throw new TypeError("Invalid response: missing statistics field");
             }
 
-            let newUser: userStatistics = {
+            const newUser: userStatistics = {
               avatarUrl: data.avatar_url,
               countryCode: data.country_code,
               joinDate: data.join_date,

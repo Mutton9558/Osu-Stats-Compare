@@ -150,7 +150,7 @@ export default function Home() {
               Reset
             </button>
           )}
-          <div className="flex flex-row gap-8 w-full justify-center items-center">
+          <div className="flex flex-col md:flex-row gap-8 w-full justify-center items-center">
             {users.slice(0, 2).map((user, idx) => (
               <UserStats
                 key={user.username + idx}

@@ -66,6 +66,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
                   width={24}
                   height={16}
                   className="object-cover rounded"
+                  title={user.countryCode.toUpperCase()}
                 />
               </div>
               <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-100">

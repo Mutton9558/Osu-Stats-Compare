@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 
 type SearchBarProps = {
@@ -8,6 +8,7 @@ type SearchBarProps = {
 
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [input, setInput] = useState("");
+  const [inputCont, setInputCont] = useState<HTMLInputElement | null>(null);
 
   const handleSearch = async (input: string) => {
     if (input.trim() !== "") {
@@ -16,26 +17,38 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
     }
   };
 
+  useEffect(() => {
+    const inputBox = document.getElementById("input-box") as HTMLInputElement;
+    setInputCont(inputBox);
+  }, []);
+
   return (
-    <div className="space-y-4 bg-pink-400 rounded-lg p-6 w-full max-w-lg font-mono">
+    <div className="space-y-4 bg-pink-400 rounded-lg p-2 sm:p-6 w-full max-w-lg font-mono">
       <div className="flex gap-2">
         <div className="relative flex-1">
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <input
             type="text"
+            id="input-box"
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch(input)}
-            placeholder="Enter osu! username..."
+            placeholder={
+              inputCont
+                ? inputCont.offsetWidth <= 180
+                  ? "Enter username..."
+                  : "Enter osu! username..."
+                : "Enter osu! username..."
+            }
             value={input}
-            className="w-full text-left pl-2 pr-12 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white text-black"
+            className="text-xs sm:text-sm sm:w-auto md:text-base md:w-64 w-full text-left pl-2 pr-12 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent bg-white text-black"
           />
         </div>
         <button
           onClick={() => handleSearch(input)}
-          className="px-6 border-2 border-black rounded-lg bg-black hover:bg-gray-800 hover:shadow-lg hover:shadow-gray-600 text-white cursor-pointer"
+          className="px-0.5 sm:px-2 md:px-5 border-2 border-black rounded-lg bg-black hover:bg-gray-800 hover:shadow-lg hover:shadow-gray-600 text-white cursor-pointer"
         >
-          <div className="flex items-center gap-2">
-            <Plus className="w-5 h-5" />
+          <div className="text-xs sm:text-sm md:text-lg flex items-center gap-2">
+            <Plus className="w-0 h-0 sm:w-3 sm:h-3 md:w-5 md:h-5" />
             Add Player
           </div>
         </button>

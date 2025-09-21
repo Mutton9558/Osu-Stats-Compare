@@ -82,7 +82,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
               <div className="text-2xl font-bold text-primary dark:text-gray-100">
                 {user.globalRank
                   ? `${user.globalRank.toLocaleString()}`
-                  : "Not Ranked"}
+                  : <span className="text-lg">Not Ranked</span>}
               </div>
               <div className="text-sm text-gray-400 dark:text-gray-100">Global Rank</div>
             </div>
@@ -90,7 +90,7 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
               <div className="text-2xl font-bold text-primary dark:text-gray-100">
                 {user.countryRank
                   ? `${user.countryRank.toLocaleString()}`
-                  : "Not Ranked"}
+                  : <span className="text-lg">Not Ranked</span>}
               </div>
               <div className="text-sm text-gray-400 dark:text-gray-100">Country Rank</div>
             </div>

@@ -131,7 +131,7 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 font-sans flex items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="bg-white dark:bg-gray-800 font-sans flex items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 overflow-hidden">
       <main className="flex flex-col gap-[16px] row-start-2 justify-center items-center sm:items-start">
         <h1 className="w-full flex items-center justify-center font-mono text-2xl tracking-wide dark:text-white rounded-lg">
           Osu Stats Comparer
@@ -145,12 +145,12 @@ export default function Home() {
           {users.length > 0 && (
             <button
               onClick={resetUsers}
-              className="p-2 w-2xs bg-red-500 hover:bg-red-700 text-white rounded-lg font-mono cursor-pointer"
+              className="p-2 w-2xs bg-red-500 hover:bg-red-600 hover:shadow-lg hover:shadow-red-900 text-white rounded-lg font-mono cursor-pointer"
             >
               Reset
             </button>
           )}
-          <div className="flex flex-row gap-8 w-full justify-center items-center">
+          <div className="flex flex-col md:flex-row gap-8 w-full justify-center items-center">
             {users.slice(0, 2).map((user, idx) => (
               <UserStats
                 key={user.username + idx}

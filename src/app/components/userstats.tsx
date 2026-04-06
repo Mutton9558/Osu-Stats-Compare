@@ -132,8 +132,8 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
               state={comparisonData ? comparisonData.totalScore : null}
             />
             <StatItem
-              label="Play Time (seconds)"
-              value={user.playTime.toLocaleString()}
+              label="Play Time"
+              value={Math.floor(user.playTime / 3600) + "hr " + Math.floor((user.playTime %3600) / 60) + "min " + ((user.playTime % 3600) % 60) + "s"}
               icon={<Clock className="w-4 h-4" />}
               className={`${styleByStats("playTime")}`}
               state={comparisonData ? comparisonData.playTime : null}

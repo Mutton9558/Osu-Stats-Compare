@@ -32,10 +32,29 @@ export default function Home() {
   );
   const [loadingState, setLoadingState] = useState(false);
 
+  const [authToken, setAuthToken] = useState(null);
+  const [expiryTime, setExpiryTime] = useState(0);
+
+  // get auth
+  async function getToken(){
+      const authTokenQuery = await fetch("/api/getAuth", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+      })
+
+      const authJson = await authTokenQuery.json();
+      setAuthToken(authJson.access_token);
+      const date = new Date();
+      const tokenExpiry = Math.round(date.getTime() / 1000) + authJson.expires_in;
+      setExpiryTime(tokenExpiry);
+    }
+
   useEffect(() => {
     const object = document.getElementById("search-warning") as HTMLElement;
 
     setSearchWarningMsg(object);
+
+    getToken();
   }, []);
 
   async function getData(username: string) {
@@ -59,10 +78,18 @@ export default function Home() {
         } else {
           try {
             setLoadingState(true);
+
+            // check if token expired
+            const curDate = new Date();
+            const curTime = curDate.getTime();
+            if(Math.round(curTime/1000) > expiryTime){
+              getToken();
+            }
+            // get user data
             const query = await fetch("/api/compare", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ user: username }),
+              body: JSON.stringify({ user: username, auth_token: authToken }),
             });
 
             const data = await query.json();

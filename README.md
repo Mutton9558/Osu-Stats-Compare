@@ -1,6 +1,5 @@
 # osu! Stats Comparer (v1)
-<h1>A website that compares users' osu! statistics. Through our site, users can easily compare their progress with another player!</h1>
-<br>
+<p>A website that compares users' osu! statistics. Through our site, users can easily compare their progress with another player!</p>
 <p>Current version: v1</p>
 
 # Features

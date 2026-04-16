@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import {getCachedToken, setCachedToken} from "@/lib/accessTokenCache";
 import SearchBar from "./components/searchbar";
 import UserStats from "./components/userstats";
 
@@ -32,35 +33,41 @@ export default function Home() {
   );
   const [loadingState, setLoadingState] = useState(false);
 
-  const [authToken, setAuthToken] = useState(null);
-  const [expiryTime, setExpiryTime] = useState(0);
 
   // get auth
   async function getToken(){
-      const authTokenQuery = await fetch("/api/getAuth", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-      })
+      const cached = getCachedToken();
+      const now = new Date().getTime();
+      const nowInSecs = Math.round(now/1000);
+      
+      // token expired
+      if(nowInSecs > cached.expiresAt){
+          const authTokenQuery = await fetch("/api/getAuth", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+        })
 
-      const authJson = await authTokenQuery.json();
-      setAuthToken(authJson.access_token);
-      const date = new Date();
-      const tokenExpiry = Math.round(date.getTime() / 1000) + authJson.expires_in;
-      setExpiryTime(tokenExpiry);
-    }
+        const authJson = await authTokenQuery.json();
+        const accessToken = authJson.access_token;
+        const tokenExpiry = nowInSecs + authJson.expires_in;
+        setCachedToken(accessToken, tokenExpiry);
+        return {accessToken, tokenExpiry};
+      } else {
+        const accessToken = cached.token;
+        const tokenExpiry = cached.expiresAt;
+        return {accessToken, tokenExpiry}
+      }      
+}
 
   useEffect(() => {
     const object = document.getElementById("search-warning") as HTMLElement;
 
     setSearchWarningMsg(object);
-
-    getToken();
   }, []);
 
   async function getData(username: string) {
     if (searchWarningMsg && !loadingState) {
       if (username == "" || username == "undefined" || username == null) {
-        console.log("Not valid user");
         searchWarningMsg.innerHTML = "Add a user!";
       } else {
         // check to see if user entered an already added user (also takes account previous usernames)
@@ -71,7 +78,6 @@ export default function Home() {
               .map((e) => e.toLowerCase())
               .includes(username.toLowerCase()))
         ) {
-          console.log("User already exists");
           searchWarningMsg.innerHTML = "User already added!";
         } else if (users.length >= 2) {
           searchWarningMsg.innerHTML = "You can only add up to two players!";
@@ -80,11 +86,9 @@ export default function Home() {
             setLoadingState(true);
 
             // check if token expired
-            const curDate = new Date();
-            const curTime = curDate.getTime();
-            if(Math.round(curTime/1000) > expiryTime){
-              getToken();
-            }
+            const tokenInfo = await getToken();
+            const authToken = tokenInfo.accessToken;
+
             // get user data
             const query = await fetch("/api/compare", {
               method: "POST",

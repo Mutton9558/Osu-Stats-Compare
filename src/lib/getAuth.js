@@ -1,6 +1,4 @@
-import { NextResponse } from "next/server";
-
-export async function POST(req) {
+export async function getAuthToken() {
     const OSU_CLIENT_ID = process.env.CLIENT_ID;
     const OSU_CLIENT_SECRET = process.env.CLIENT_SECRET;
 
@@ -21,5 +19,5 @@ export async function POST(req) {
 
     const authToken = await authTokenFetch.json();
 
-    return NextResponse.json(authToken);
+    return {access_token: authToken.access_token, expires_in: authToken.expires_in}
 }

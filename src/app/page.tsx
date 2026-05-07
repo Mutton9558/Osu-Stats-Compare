@@ -39,24 +39,24 @@ export default function Home() {
       const cached = getCachedToken();
       const now = new Date().getTime();
       const nowInSecs = Math.round(now/1000);
-      
+      let accessToken, tokenExpiry;
+
       // token expired
       if(nowInSecs > cached.expiresAt){
-          const authTokenQuery = await fetch("/api/getAuth", {
-          method: "POST",
+          const authTokenQuery = await fetch("/api/authController", {
+          method: "GET",
           headers: {"Content-Type": "application/json"},
         })
 
         const authJson = await authTokenQuery.json();
-        const accessToken = authJson.access_token;
-        const tokenExpiry = nowInSecs + authJson.expires_in;
+        accessToken = authJson.access_token;
+        tokenExpiry = nowInSecs + authJson.expires_in;
         setCachedToken(accessToken, tokenExpiry);
-        return {accessToken, tokenExpiry};
       } else {
-        const accessToken = cached.token;
-        const tokenExpiry = cached.expiresAt;
-        return {accessToken, tokenExpiry}
+        accessToken = cached.token;
+        tokenExpiry = cached.expiresAt;
       }      
+      return {accessToken, tokenExpiry};
 }
 
   useEffect(() => {

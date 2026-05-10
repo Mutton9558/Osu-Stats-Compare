@@ -41,7 +41,6 @@ export default function Home() {
   async function getData(username: string) {
     if (searchWarningMsg && !loadingState) {
       if (username == "" || username == "undefined" || username == null) {
-        console.log("Not valid user");
         searchWarningMsg.innerHTML = "Add a user!";
       } else {
         // check to see if user entered an already added user (also takes account previous usernames)
@@ -52,13 +51,14 @@ export default function Home() {
               .map((e) => e.toLowerCase())
               .includes(username.toLowerCase()))
         ) {
-          console.log("User already exists");
           searchWarningMsg.innerHTML = "User already added!";
         } else if (users.length >= 2) {
           searchWarningMsg.innerHTML = "You can only add up to two players!";
         } else {
           try {
             setLoadingState(true);
+
+            // get user data
             const query = await fetch("/api/compare", {
               method: "POST",
               headers: { "Content-Type": "application/json" },

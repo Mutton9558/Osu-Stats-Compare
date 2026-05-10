@@ -53,6 +53,10 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
           </div>
         </button>
       </div>
+      <div className="flex flex-row text-xs sm:text-sm text-black">
+        <p>Try searching for: </p>
+        <p className="font-bold ml-2">mrekk, whitecat or lufshii</p>
+      </div>
     </div>
   );
 };

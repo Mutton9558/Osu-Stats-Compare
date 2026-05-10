@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {getCachedToken, setCachedToken} from "@/lib/accessTokenCache";
 import SearchBar from "./components/searchbar";
 import UserStats from "./components/userstats";
 
@@ -33,32 +32,6 @@ export default function Home() {
   );
   const [loadingState, setLoadingState] = useState(false);
 
-
-  // get auth
-  async function getToken(){
-      const cached = getCachedToken();
-      const now = new Date().getTime();
-      const nowInSecs = Math.round(now/1000);
-      
-      // token expired
-      if(nowInSecs > cached.expiresAt){
-          const authTokenQuery = await fetch("/api/getAuth", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-        })
-
-        const authJson = await authTokenQuery.json();
-        const accessToken = authJson.access_token;
-        const tokenExpiry = nowInSecs + authJson.expires_in;
-        setCachedToken(accessToken, tokenExpiry);
-        return {accessToken, tokenExpiry};
-      } else {
-        const accessToken = cached.token;
-        const tokenExpiry = cached.expiresAt;
-        return {accessToken, tokenExpiry}
-      }      
-}
-
   useEffect(() => {
     const object = document.getElementById("search-warning") as HTMLElement;
 
@@ -85,15 +58,11 @@ export default function Home() {
           try {
             setLoadingState(true);
 
-            // check if token expired
-            const tokenInfo = await getToken();
-            const authToken = tokenInfo.accessToken;
-
             // get user data
             const query = await fetch("/api/compare", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ user: username, auth_token: authToken }),
+              body: JSON.stringify({ user: username }),
             });
 
             const data = await query.json();

@@ -1,7 +1,8 @@
 # osu! Stats Compare
 
 <p>A website that compares users' osu! statistics. Through our site, users can easily compare their progress with another player!</p>
-![Version](https://img.shields.io/github/package-json/v/mutton9558/osu-stats-compare)
+
+![Version](https://img.shields.io/github/package-json/v/mutton9558/osu-stats-compare?color=ff66aa&label=Version&labelColor=222222&logo=next.js)
 
 # Features
 1. Search players by their osu! usernames (including their previous ones!)

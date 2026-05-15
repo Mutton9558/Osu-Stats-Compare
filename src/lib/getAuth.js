@@ -19,5 +19,7 @@ export async function getAuthToken() {
 
     const authToken = await authTokenFetch.json();
 
+    console.log(authToken);
+
     return {access_token: authToken.access_token, expires_in: authToken.expires_in}
 }

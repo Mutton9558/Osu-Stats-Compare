@@ -42,7 +42,7 @@ export default function Home() {
   const [loadingState, setLoadingState] = useState(false);
   const [warningState, setWarningState] = useState(false);
   const [comparisons, setComparisons] = useState<comparisonBools[]>([]);
-  const [clearWarningTimer, setClearWarningTimer] = useState<NodeJS.Timeout | null>(null)
+  const [clearWarningTimer, setClearWarningTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const object = document.getElementById("search-warning") as HTMLElement;
@@ -55,7 +55,6 @@ export default function Home() {
       window.clearTimeout(clearWarningTimer);
 
     if(warningState){
-      console.log("test")
       setClearWarningTimer(setTimeout(clearWarningMessage, 5000));
     }
   }, [warningState])
@@ -83,6 +82,7 @@ export default function Home() {
 
   async function getData(username: string) {
     if (!loadingState) {
+      setLoadingState(true);
       if (username == "" || username == "undefined" || username == null) {
         setWarningMessage("Add a user!");
       } else {
@@ -99,8 +99,6 @@ export default function Home() {
           setWarningMessage("You can only add up to two players!");
         } else {
           try {
-            setLoadingState(true);
-
             // get user data
             const query = await fetch("/api/compare", {
               method: "POST",
@@ -144,11 +142,11 @@ export default function Home() {
               setWarningMessage("Please add a real user!");
             }
           }
-          setLoadingState(false);
         }
       }
+      setLoadingState(false);
     } else {
-      console.log("Can't get warning message element!");
+      console.log("Ongoing query is happening!");
     }
   }
 
@@ -192,7 +190,7 @@ export default function Home() {
           id="search-warning"
         ></p>
         <div className="flex flex-col gap-6 w-full items-center">
-          <SearchBar onSearch={getData} />
+          <SearchBar onSearch={getData} disableState={loadingState} />
           {users.length > 0 && (
             <button
               onClick={resetUsers}

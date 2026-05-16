@@ -40,7 +40,9 @@ export default function Home() {
     null
   );
   const [loadingState, setLoadingState] = useState(false);
+  const [warningState, setWarningState] = useState(false);
   const [comparisons, setComparisons] = useState<comparisonBools[]>([]);
+  const [clearWarningTimer, setClearWarningTimer] = useState<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     const object = document.getElementById("search-warning") as HTMLElement;
@@ -49,16 +51,40 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if(clearWarningTimer != null)
+      window.clearTimeout(clearWarningTimer);
+
+    if(warningState){
+      console.log("test")
+      setClearWarningTimer(setTimeout(clearWarningMessage, 5000));
+    }
+  }, [warningState])
+
+  useEffect(() => {
     setComparisons([]);
     users.map((user, idx) => {
       compareUsers(idx);
     })
   }, [users]);
 
+  function clearWarningMessage(){
+    if(searchWarningMsg){
+      searchWarningMsg.innerHTML = "";
+      setWarningState(false);
+    }
+  }
+
+  function setWarningMessage(msg: string){
+    if(searchWarningMsg){
+      searchWarningMsg.innerHTML = msg;
+      setWarningState(true);
+    }
+  }
+
   async function getData(username: string) {
-    if (searchWarningMsg && !loadingState) {
+    if (!loadingState) {
       if (username == "" || username == "undefined" || username == null) {
-        searchWarningMsg.innerHTML = "Add a user!";
+        setWarningMessage("Add a user!");
       } else {
         // check to see if user entered an already added user (also takes account previous usernames)
         if (
@@ -68,9 +94,9 @@ export default function Home() {
               .map((e) => e.toLowerCase())
               .includes(username.toLowerCase()))
         ) {
-          searchWarningMsg.innerHTML = "User already added!";
+          setWarningMessage("User already added!");
         } else if (users.length >= 2) {
-          searchWarningMsg.innerHTML = "You can only add up to two players!";
+          setWarningMessage("You can only add up to two players!");
         } else {
           try {
             setLoadingState(true);
@@ -110,12 +136,12 @@ export default function Home() {
               aCount: data.statistics.grade_counts.a,
             };
 
-            searchWarningMsg.innerHTML = "";
+            clearWarningMessage();
             setUsers((prev) => [...prev, newUser]);
           } catch (err) {
             console.log(err);
             if (searchWarningMsg) {
-              searchWarningMsg.innerHTML = "Please add a real user!";
+              setWarningMessage("Please add a real user!");
             }
           }
           setLoadingState(false);
@@ -148,7 +174,7 @@ export default function Home() {
   function resetUsers() {
     setUsers([]);
     if (searchWarningMsg) {
-      searchWarningMsg.innerHTML = "";
+      clearWarningMessage();
     }
   }
 

@@ -66,12 +66,12 @@ export default function Home() {
     })
   }, [users]);
 
-  function clearWarningMessage(){
+  const clearWarningMessage = React.useCallback(() => {
     if(searchWarningMsg){
       searchWarningMsg.innerHTML = "";
       setWarningState(false);
     }
-  }
+  }, [searchWarningMsg]);
 
   function setWarningMessage(msg: string){
     if(searchWarningMsg){
@@ -151,7 +151,7 @@ export default function Home() {
   }
 
   // get compare data
-  function compareUsers(index: number) {
+  const compareUsers = React.useCallback((index: number) => {
     if (users.length < 2) return null;
 
     const otherIndex = (index + 1) % 2;
@@ -163,7 +163,7 @@ export default function Home() {
       maxCombo: users[index].maxCombo > users[otherIndex].maxCombo,
     };
     setComparisons((prev) => [...prev, newComparisonData]);
-  }
+  }, [users]);
 
   const removeUser = (target: userStatistics) => {
     setUsers((prev) => prev.filter((user) => user != target));
@@ -183,7 +183,7 @@ export default function Home() {
           <h1 className="font-mono text-2xl tracking-wide dark:text-white rounded-lg">
             Osu Stats Compare
           </h1>
-          <p className="text-white font-mono">Compare two user's osu! statistics!</p>
+          <p className="text-white font-mono">Compare two users&apos; osu! statistics!</p>
         </div>
         <p
           className="text-red-400 font-mono tracking-wide w-full flex items-center justify-center"

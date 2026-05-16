@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "./components/searchbar";
 import UserStats from "./components/userstats";
+import { version } from "../../package.json"
 
 export default function Home() {
   interface userStatistics {
@@ -25,18 +26,34 @@ export default function Home() {
     shCount: number;
     aCount: number;
   }
+
+  interface comparisonBools{
+    accuracy: boolean;
+    playCount: boolean;
+    totalScore: boolean;
+    playTime: boolean;
+    maxCombo: boolean;
+  }
   const [users, setUsers] = useState<userStatistics[]>([]);
   // const [username, setUsername] = useState("");
   const [searchWarningMsg, setSearchWarningMsg] = useState<HTMLElement | null>(
     null
   );
   const [loadingState, setLoadingState] = useState(false);
+  const [comparisons, setComparisons] = useState<comparisonBools[]>([]);
 
   useEffect(() => {
     const object = document.getElementById("search-warning") as HTMLElement;
 
     setSearchWarningMsg(object);
   }, []);
+
+  useEffect(() => {
+    setComparisons([]);
+    users.map((user, idx) => {
+      compareUsers(idx);
+    })
+  }, [users]);
 
   async function getData(username: string) {
     if (searchWarningMsg && !loadingState) {
@@ -113,14 +130,19 @@ export default function Home() {
   function compareUsers(index: number) {
     if (users.length < 2) return null;
 
-    const otherIndex = index === 0 ? 1 : 0;
-    return {
+    const otherIndex = (index + 1) % 2;
+    const newComparisonData: comparisonBools = {
       accuracy: users[index].accuracy > users[otherIndex].accuracy,
       playCount: users[index].playCount > users[otherIndex].playCount,
       totalScore: users[index].totalScore > users[otherIndex].totalScore,
       playTime: users[index].playTime > users[otherIndex].playTime,
       maxCombo: users[index].maxCombo > users[otherIndex].maxCombo,
     };
+    setComparisons((prev) => [...prev, newComparisonData]);
+  }
+
+  const removeUser = (target: userStatistics) => {
+    setUsers((prev) => prev.filter((user) => user != target));
   }
 
   function resetUsers() {
@@ -131,11 +153,14 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 font-sans flex items-center justify-center min-h-screen overflow-hidden p-8 pb-20 sm:p-20">
-      <main className="flex flex-col gap-[16px] row-start-2 justify-center items-center sm:items-start">
-        <h1 className="w-full flex items-center justify-center font-mono text-2xl tracking-wide dark:text-white rounded-lg">
-          Osu Stats Compare
-        </h1>
+    <div className="bg-white dark:bg-gray-800 font-sans flex flex-col items-center justify-center min-h-screen overflow-hidden pt-4 pl-8 pr-8 sm:pt-12 sm:pl-12 sm:pr-12">
+      <main className="flex flex-col gap-[16px] flex-1 justify-center items-center sm:items-start">
+        <div className="w-full flex flex-col items-center justify-center ">
+          <h1 className="font-mono text-2xl tracking-wide dark:text-white rounded-lg">
+            Osu Stats Compare
+          </h1>
+          <p className="text-white font-mono">Compare two user's osu! statistics!</p>
+        </div>
         <p
           className="text-red-400 font-mono tracking-wide w-full flex items-center justify-center"
           id="search-warning"
@@ -155,12 +180,16 @@ export default function Home() {
               <UserStats
                 key={user.username + idx}
                 user={user}
-                comparisonData={compareUsers(idx)}
+                comparisonData={comparisons[idx]}
+                resetUser={removeUser}
               />
             ))}
           </div>
         </div>
-      </main>
+      </main> 
+      <footer className="w-screen mt-8 bg-white p-2 border-t text-center text-sm text-gray-500 dark:text-white dark:bg-gray-800">
+          <p className="font-mono text-gray-500 dark:text-white">Osu Stats Compare v{version} | MIT Licensed</p>
+        </footer>
     </div>
   );
 }

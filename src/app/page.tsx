@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import SearchBar from "./components/searchbar";
 import UserStats from "./components/userstats";
+import { version } from "../../package.json"
 
 export default function Home() {
   interface userStatistics {
@@ -25,12 +26,23 @@ export default function Home() {
     shCount: number;
     aCount: number;
   }
+
+  interface comparisonBools{
+    accuracy: boolean;
+    playCount: boolean;
+    totalScore: boolean;
+    playTime: boolean;
+    maxCombo: boolean;
+  }
   const [users, setUsers] = useState<userStatistics[]>([]);
   // const [username, setUsername] = useState("");
   const [searchWarningMsg, setSearchWarningMsg] = useState<HTMLElement | null>(
     null
   );
   const [loadingState, setLoadingState] = useState(false);
+  const [warningState, setWarningState] = useState(false);
+  const [comparisons, setComparisons] = useState<comparisonBools[]>([]);
+  const [clearWarningTimer, setClearWarningTimer] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const object = document.getElementById("search-warning") as HTMLElement;
@@ -38,10 +50,41 @@ export default function Home() {
     setSearchWarningMsg(object);
   }, []);
 
+  useEffect(() => {
+    if(clearWarningTimer != null)
+      window.clearTimeout(clearWarningTimer);
+
+    if(warningState){
+      setClearWarningTimer(setTimeout(clearWarningMessage, 5000));
+    }
+  }, [warningState])
+
+  useEffect(() => {
+    setComparisons([]);
+    users.map((user, idx) => {
+      compareUsers(idx);
+    })
+  }, [users]);
+
+  const clearWarningMessage = React.useCallback(() => {
+    if(searchWarningMsg){
+      searchWarningMsg.innerHTML = "";
+      setWarningState(false);
+    }
+  }, [searchWarningMsg]);
+
+  function setWarningMessage(msg: string){
+    if(searchWarningMsg){
+      searchWarningMsg.innerHTML = msg;
+      setWarningState(true);
+    }
+  }
+
   async function getData(username: string) {
-    if (searchWarningMsg && !loadingState) {
+    if (!loadingState) {
+      setLoadingState(true);
       if (username == "" || username == "undefined" || username == null) {
-        searchWarningMsg.innerHTML = "Add a user!";
+        setWarningMessage("Add a user!");
       } else {
         // check to see if user entered an already added user (also takes account previous usernames)
         if (
@@ -51,13 +94,11 @@ export default function Home() {
               .map((e) => e.toLowerCase())
               .includes(username.toLowerCase()))
         ) {
-          searchWarningMsg.innerHTML = "User already added!";
+          setWarningMessage("User already added!");
         } else if (users.length >= 2) {
-          searchWarningMsg.innerHTML = "You can only add up to two players!";
+          setWarningMessage("You can only add up to two players!");
         } else {
           try {
-            setLoadingState(true);
-
             // get user data
             const query = await fetch("/api/compare", {
               method: "POST",
@@ -93,55 +134,63 @@ export default function Home() {
               aCount: data.statistics.grade_counts.a,
             };
 
-            searchWarningMsg.innerHTML = "";
+            clearWarningMessage();
             setUsers((prev) => [...prev, newUser]);
           } catch (err) {
             console.log(err);
             if (searchWarningMsg) {
-              searchWarningMsg.innerHTML = "Please add a real user!";
+              setWarningMessage("Please add a real user!");
             }
           }
-          setLoadingState(false);
         }
       }
+      setLoadingState(false);
     } else {
-      console.log("Can't get warning message element!");
+      console.log("Ongoing query is happening!");
     }
   }
 
   // get compare data
-  function compareUsers(index: number) {
+  const compareUsers = React.useCallback((index: number) => {
     if (users.length < 2) return null;
 
-    const otherIndex = index === 0 ? 1 : 0;
-    return {
+    const otherIndex = (index + 1) % 2;
+    const newComparisonData: comparisonBools = {
       accuracy: users[index].accuracy > users[otherIndex].accuracy,
       playCount: users[index].playCount > users[otherIndex].playCount,
       totalScore: users[index].totalScore > users[otherIndex].totalScore,
       playTime: users[index].playTime > users[otherIndex].playTime,
       maxCombo: users[index].maxCombo > users[otherIndex].maxCombo,
     };
+    setComparisons((prev) => [...prev, newComparisonData]);
+  }, [users]);
+
+  const removeUser = (target: userStatistics) => {
+    setUsers((prev) => prev.filter((user) => user != target));
   }
 
   function resetUsers() {
     setUsers([]);
     if (searchWarningMsg) {
-      searchWarningMsg.innerHTML = "";
+      clearWarningMessage();
     }
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 font-sans flex items-center justify-center min-h-screen overflow-hidden p-8 pb-20 sm:p-20">
-      <main className="flex flex-col gap-[16px] row-start-2 justify-center items-center sm:items-start">
-        <h1 className="w-full flex items-center justify-center font-mono text-2xl tracking-wide dark:text-white rounded-lg">
-          Osu Stats Compare
-        </h1>
+    <div className="bg-white dark:bg-gray-800 font-sans flex flex-col items-center justify-center min-h-screen overflow-hidden pt-4 pl-8 pr-8 sm:pt-12 sm:pl-12 sm:pr-12">
+      <main className="flex flex-col gap-[16px] flex-1 justify-center items-center sm:items-start">
+        <div className="w-full flex flex-col items-center justify-center ">
+          <h1 className="font-mono text-2xl tracking-wide dark:text-white rounded-lg">
+            Osu Stats Compare
+          </h1>
+          <p className="text-white font-mono">Compare two users&apos; osu! statistics!</p>
+        </div>
         <p
           className="text-red-400 font-mono tracking-wide w-full flex items-center justify-center"
           id="search-warning"
         ></p>
         <div className="flex flex-col gap-6 w-full items-center">
-          <SearchBar onSearch={getData} />
+          <SearchBar onSearch={getData} disableState={loadingState} />
           {users.length > 0 && (
             <button
               onClick={resetUsers}
@@ -155,12 +204,16 @@ export default function Home() {
               <UserStats
                 key={user.username + idx}
                 user={user}
-                comparisonData={compareUsers(idx)}
+                comparisonData={comparisons[idx]}
+                resetUser={removeUser}
               />
             ))}
           </div>
         </div>
-      </main>
+      </main> 
+      <footer className="w-screen mt-8 bg-white p-2 border-t text-center text-sm text-gray-500 dark:text-white dark:bg-gray-800">
+          <p className="font-mono text-gray-500 dark:text-white">Osu Stats Compare v{version} | MIT Licensed</p>
+        </footer>
     </div>
   );
 }

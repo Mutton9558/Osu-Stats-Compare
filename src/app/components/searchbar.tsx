@@ -4,9 +4,10 @@ import { Plus } from "lucide-react";
 
 type SearchBarProps = {
   onSearch: (username: string) => void;
+  disableState: boolean;
 };
 
-const SearchBar = ({ onSearch }: SearchBarProps) => {
+const SearchBar = ({ onSearch, disableState }: SearchBarProps) => {
   const [input, setInput] = useState("");
   const [inputCont, setInputCont] = useState<HTMLInputElement | null>(null);
 
@@ -40,12 +41,14 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
                 : "Enter osu! username..."
             }
             value={input}
-            className="text-xs sm:text-sm sm:w-auto md:text-base md:w-64 w-full text-left pl-2 pr-12 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:border-transparent bg-white text-black"
+            disabled={disableState}
+            className="text-xs sm:text-sm sm:w-auto md:text-base md:w-64 w-full text-left pl-2 pr-12 py-2 rounded-lg border border-gray-300 enabled:focus:outline-none focus:ring-2 enabled:focus:ring-gray-800 focus:border-transparent bg-white text-black disabled:bg-gray-300 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
           />
         </div>
         <button
           onClick={() => handleSearch(input)}
-          className="px-0.5 sm:px-2 md:px-5 border-2 border-black rounded-lg bg-black hover:bg-gray-800 hover:shadow-lg hover:shadow-gray-600 text-white cursor-pointer"
+          disabled={disableState}
+          className="px-0.5 sm:px-2 md:px-5 border-2 border-black rounded-lg bg-black enabled:hover:bg-gray-800 enabled:hover:shadow-lg enabled:hover:shadow-gray-600 text-white cursor-pointer disabled:bg-gray-300 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
         >
           <div className="text-xs sm:text-sm md:text-lg flex items-center gap-2">
             <Plus className="w-0 h-0 sm:w-3 sm:h-3 md:w-5 md:h-5" />

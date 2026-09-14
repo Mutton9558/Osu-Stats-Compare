@@ -8,6 +8,7 @@ interface userStatistics {
   countryCode: string;
   joinDate: string;
   username: string;
+  previous_usernames: string[];
   level: number;
   globalRank: number;
   countryRank: number;
@@ -24,18 +25,21 @@ interface userStatistics {
   aCount: number;
 }
 
-interface UserStatsProps {
-  user: userStatistics;
-  comparisonData: {
-    accuracy: boolean;
-    playCount: boolean;
-    totalScore: boolean;
-    playTime: boolean;
-    maxCombo: boolean;
-  } | null;
+interface comparisonFormat {
+  accuracy: boolean;
+  playCount: boolean;
+  totalScore: boolean;
+  playTime: boolean;
+  maxCombo: boolean;
 }
 
-export default function UserStats({ user, comparisonData }: UserStatsProps) {
+interface UserStatsProps {
+  user: userStatistics;
+  comparisonData: comparisonFormat | null;
+  resetUser: (user: userStatistics) => void;
+}
+
+export default function UserStats({ user, comparisonData, resetUser }: UserStatsProps) {
   const styleByStats = (
     stat: keyof NonNullable<UserStatsProps["comparisonData"]>
   ) => {
@@ -73,6 +77,9 @@ export default function UserStats({ user, comparisonData }: UserStatsProps) {
                 <span>Level {user.level}</span>
                 <span>Joined {new Date(user.joinDate).getFullYear()}</span>
               </div>
+            </div>
+            <div className="flex position: absolute right-0 mr-6">
+              <button className="cursor-pointer" onClick={() => resetUser(user)}><Image src="/x-circle.svg" alt="Remove User" width="30" height="30"></Image></button>
             </div>
           </div>
 

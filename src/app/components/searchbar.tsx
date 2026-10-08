@@ -50,9 +50,15 @@ const SearchBar = ({ onSearch, disableState }: SearchBarProps) => {
           disabled={disableState}
           className="px-0.5 sm:px-2 md:px-5 border-2 border-black rounded-lg bg-black enabled:hover:bg-gray-800 enabled:hover:shadow-lg enabled:hover:shadow-gray-600 text-white cursor-pointer disabled:bg-gray-300 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
         >
-          <div className="text-xs sm:text-sm md:text-lg flex items-center gap-2">
-            <Plus className="w-0 h-0 sm:w-3 sm:h-3 md:w-5 md:h-5" />
-            Add Player
+          <div className="text-xs sm:text-sm md:text-lg gap-2">
+            {
+              disableState ?
+              <p>Searching...</p> :
+                <div className="w-full p-0 m-0 h-full flex flex-row items-center">
+                  <Plus className="w-0 h-0 sm:w-3 sm:h-3 md:w-5 md:h-5" />
+                  Add Player
+                </div>
+            }
           </div>
         </button>
       </div>

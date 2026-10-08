@@ -183,7 +183,7 @@ export default function Home() {
           <h1 className="font-mono text-2xl tracking-wide dark:text-white rounded-lg">
             Osu Stats Compare
           </h1>
-          <p className="text-white font-mono">Compare two users&apos; osu! statistics!</p>
+          <p className="text-white font-mono flex flex-row items-center">Compare two users&apos; <img src="osu_logo.svg" width="40" height="40" alt="osu-logo" className="mr-2 ml-2"></img> statistics!</p>
         </div>
         <p
           className="text-red-400 font-mono tracking-wide w-full flex items-center justify-center"

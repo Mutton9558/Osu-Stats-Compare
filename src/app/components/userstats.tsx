@@ -53,7 +53,7 @@ export default function UserStats({ user, comparisonData, resetUser }: UserStats
       <div className="w-96">
         <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full font-mono">
           {/* User Header */}
-          <div className="flex items-center gap-4 mb-6 dark:text-white rounded-lg">
+          <div className="flex items-center gap-4 mb-6 dark:text-white rounded-lg cursor-pointer" onClick={() => window.open(`https://osu.ppy.sh/users/${user.username}`, '_blank')}>
             <Image
               src={user.avatarUrl}
               alt={`${user.username}'s avatar`}
@@ -79,7 +79,7 @@ export default function UserStats({ user, comparisonData, resetUser }: UserStats
               </div>
             </div>
             <div className="flex position: absolute right-0 mr-6">
-              <button className="cursor-pointer" onClick={() => resetUser(user)}><Image src="/x-circle.svg" alt="Remove User" width="30" height="30"></Image></button>
+              <button className="cursor-pointer" onClick={(e) => {e.stopPropagation(); resetUser(user)}}><Image src="/x-circle.svg" alt="Remove User" width="30" height="30"></Image></button>
             </div>
           </div>
 

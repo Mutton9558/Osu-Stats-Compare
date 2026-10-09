@@ -7,6 +7,7 @@ import { version } from "../../package.json"
 export default function Home() {
   interface userStatistics {
     avatarUrl: string;
+    coverUrl: string;
     countryCode: string;
     joinDate: string;
     username: string;
@@ -81,6 +82,7 @@ export default function Home() {
   }
 
   async function getData(username: string) {
+
     if (!loadingState) {
       setLoadingState(true);
       if (username == "" || username == "undefined" || username == null) {
@@ -108,12 +110,15 @@ export default function Home() {
 
             const data = await query.json();
 
+            console.log(data);
+
             if (!data || !data.statistics) {
               throw new TypeError("Invalid response: missing statistics field");
             }
 
             const newUser: userStatistics = {
               avatarUrl: data.avatar_url,
+              coverUrl: data.cover_url,
               countryCode: data.country_code,
               joinDate: data.join_date,
               username: data.username,
@@ -181,9 +186,9 @@ export default function Home() {
       <main className="flex flex-col gap-[16px] flex-1 justify-center items-center sm:items-start">
         <div className="w-full flex flex-col items-center justify-center ">
           <h1 className="font-mono text-2xl tracking-wide dark:text-white rounded-lg">
-            Osu Stats Compare
+            <span className="flex flex-row items-center"><img src="osu_logo.svg" width="40" height="40" alt="osu-logo" className="mr-2 ml-2"></img> Stats Compare</span>
           </h1>
-          <p className="text-white font-mono flex flex-row items-center">Compare two users&apos; <img src="osu_logo.svg" width="40" height="40" alt="osu-logo" className="mr-2 ml-2"></img> statistics!</p>
+          <p className="text-white font-mono flex flex-row items-center mt-2">Made by <a href="https://osu.ppy.sh/users/19744230" target="_blank" rel="noopener noreferrer" className="ml-2 mr-2 underline cursor-pointer">MuttonIsTrash</a> and <a href="https://osu.ppy.sh/users/26255171" target="_blank" rel="noopener noreferrer" className="ml-2 mr-2 underline cursor-pointer">lufshii</a></p>
         </div>
         <p
           className="text-red-400 font-mono tracking-wide w-full flex items-center justify-center"

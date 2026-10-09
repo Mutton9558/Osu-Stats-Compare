@@ -5,6 +5,7 @@ import Image from "next/image";
 
 interface userStatistics {
   avatarUrl: string;
+  coverUrl: string;
   countryCode: string;
   joinDate: string;
   username: string;
@@ -51,17 +52,18 @@ export default function UserStats({ user, comparisonData, resetUser }: UserStats
   return (
     <div>
       <div className="w-96">
-        <div className="bg-red-400/10 p-6 rounded-lg relative max-w-lg w-full font-mono">
+        <div className="bg-red-400/10 rounded-lg relative max-w-lg w-full font-mono">
           {/* User Header */}
-          <div className="flex items-center gap-4 mb-6 dark:text-white rounded-lg cursor-pointer" onClick={() => window.open(`https://osu.ppy.sh/users/${user.username}`, '_blank')}>
+          <div style={{ backgroundImage: user.coverUrl ? `url('${user.coverUrl}')` : 'none' }} className={`flex relative items-center gap-4 mb-6 bg-cover bg-center bg-no-repeat p-6 dark:text-white rounded-lg cursor-pointer`} onClick={() => window.open(`https://osu.ppy.sh/users/${user.username}`, '_blank', 'noopener,noreferrer')}>
+            <div className="bg-black/40 backdrop-blur-[2px] back w-full h-full absolute top-0 left-0 rounded-lg"></div>
             <Image
               src={user.avatarUrl}
               alt={`${user.username}'s avatar`}
               width={48}
               height={48}
-              className="rounded-full"
+              className="rounded-full z-10"
             />
-            <div className="flex-1">
+            <div className="flex-1 z-10">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-xl font-semibold">{user.username}</h3>
                 <Image
@@ -73,18 +75,18 @@ export default function UserStats({ user, comparisonData, resetUser }: UserStats
                   title={user.countryCode.toUpperCase()}
                 />
               </div>
-              <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-100">
+              <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-100 z-10">
                 <span>Level {user.level}</span>
                 <span>Joined {new Date(user.joinDate).getFullYear()}</span>
               </div>
             </div>
-            <div className="flex position: absolute right-0 mr-6">
+            <div className="flex position: absolute right-0 mr-6 z-10">
               <button className="cursor-pointer" onClick={(e) => {e.stopPropagation(); resetUser(user)}}><Image src="/x-circle.svg" alt="Remove User" width="30" height="30"></Image></button>
             </div>
           </div>
 
           {/* Ranks */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-2 gap-4 mb-6 pl-4 pr-4">
             <div className="text-center p-3 bg-gray-100 dark:bg-gray-500 rounded-lg hover:shadow-lg hover:shadow-gray-400">
               <div className="text-2xl font-bold text-primary dark:text-gray-100">
                 {user.globalRank
@@ -104,19 +106,22 @@ export default function UserStats({ user, comparisonData, resetUser }: UserStats
           </div>
 
           {/* Performance Points */}
-          <div className="mb-6 p-4 bg-gray-200  dark:bg-gray-500 rounded-lg hover:shadow-lg hover:shadow-gray-400">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-1 dark:text-gray-100">
-                {user.performancePoints.toFixed(2)}
-              </div>
-              <div className="text-sm text-gray-400 dark:text-gray-100">
-                Performance Points (pp)
+          <div className="pl-4 pr-4">
+            <div className="mb-6 p-4 bg-gray-200  dark:bg-gray-500 rounded-lg hover:shadow-lg hover:shadow-gray-400">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary mb-1 dark:text-gray-100">
+                  {user.performancePoints.toFixed(2)}
+                </div>
+                <div className="text-sm text-gray-400 dark:text-gray-100">
+                  Performance Points (pp)
+                </div>
               </div>
             </div>
           </div>
+          
 
           {/* Main Stats */}
-          <div className="space-y-1 mb-6">
+          <div className="space-y-1 mb-6 pl-4 pr-4">
             <StatItem
               label="Accuracy"
               value={user.accuracy.toFixed(2) + "%"}
@@ -155,7 +160,7 @@ export default function UserStats({ user, comparisonData, resetUser }: UserStats
           </div>
 
           {/* Grade Counts */}
-          <div className="mb-6">
+          <div className="pl-4 pr-4 pb-6">
             <h4 className="text-sm font-medium mb-3 text-gray-400 dark:text-gray-100">
               Grade Distribution
             </h4>

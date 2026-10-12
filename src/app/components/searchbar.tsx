@@ -64,7 +64,7 @@ const SearchBar = ({ onSearch, disableState }: SearchBarProps) => {
       </div>
       <div className="flex flex-row text-xs sm:text-sm text-black">
         <p>Try searching for: </p>
-        <p className="font-bold ml-2">peppy, muttonistrash or lufshii</p>
+        <p className="font-bold ml-2">muttonistrash, jasoderulo or lufshii</p>
       </div>
     </div>
   );

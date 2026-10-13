@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, RefreshCcw } from "lucide-react";
 
 type SearchBarProps = {
   onSearch: (username: string) => void;
@@ -51,8 +51,10 @@ const SearchBar = ({ onSearch, disableState }: SearchBarProps) => {
           className="px-0.5 sm:px-2 md:px-5 border-2 border-black rounded-lg bg-black enabled:hover:bg-gray-800 enabled:hover:shadow-lg enabled:hover:shadow-gray-600 text-white cursor-pointer disabled:bg-gray-300 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
         >
           <div className="text-xs sm:text-sm md:text-lg flex items-center gap-2">
-            <Plus className="w-0 h-0 sm:w-3 sm:h-3 md:w-5 md:h-5" />
-            Add Player
+            {disableState ?
+              (<RefreshCcw className="w-0 h-0 sm:w-3 sm:h-3 md:w-5 md:h-5 animate-spin" />) : <Plus className="w-0 h-0 sm:w-3 sm:h-3 md:w-5 md:h-5" />
+            }
+            {disableState ? "Loading..." : "Add Player"}
           </div>
         </button>
       </div>

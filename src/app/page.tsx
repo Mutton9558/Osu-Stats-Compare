@@ -186,7 +186,7 @@ export default function Home() {
       <main className="flex flex-col gap-[16px] flex-1 justify-center items-center sm:items-start">
         <div className="w-full flex flex-col items-center justify-center ">
           <h1 className="font-mono text-2xl tracking-wide dark:text-white rounded-lg">
-            <span className="flex flex-row items-center"><img src="osu_logo.svg" width="40" height="40" alt="osu-logo" className="mr-2 ml-2"></img> Stats Compare</span>
+            <span className="flex flex-row items-center"><a  href="https://osu.ppy.sh/" target="_blank" rel="noopener noreferrer"><img src="osu_logo.svg" width="40" height="40" alt="osu-logo" className="mr-2 ml-2"></img></a> Stats Compare</span>
           </h1>
           <p className="text-white text-xs md:text-lg font-mono flex flex-row items-center mt-2">Made by <a href="https://osu.ppy.sh/users/19744230" target="_blank" rel="noopener noreferrer" className="ml-2 mr-2 underline cursor-pointer">MuttonIsTrash</a>, <a href="https://osu.ppy.sh/users/26255171" target="_blank" rel="noopener noreferrer" className="ml-2 mr-2 underline cursor-pointer">lufshii</a> and <a href="https://osu.ppy.sh/users/31477491" target="_blank" rel="noopener noreferrer" className="ml-2 mr-2 underline cursor-pointer">JasoDerulo</a></p>
         </div>

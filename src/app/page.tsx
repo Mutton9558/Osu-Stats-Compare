@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import SearchBar from "./components/searchbar";
 import UserStats from "./components/userstats";
 import { version } from "../../package.json"
+import MusicBox from "./components/musicbox";
 
 export default function Home() {
   interface userStatistics {
@@ -182,7 +183,7 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 font-sans flex flex-col items-center justify-center min-h-screen overflow-hidden pt-4 pl-8 pr-8 sm:pt-12 sm:pl-12 sm:pr-12">
+    <div className="relative bg-white dark:bg-gray-800 font-sans flex flex-col items-center justify-center min-h-screen overflow-hidden pt-4 pl-8 pr-8 sm:pt-12 sm:pl-12 sm:pr-12">
       <main className="flex flex-col gap-[16px] flex-1 justify-center items-center sm:items-start">
         <div className="w-full flex flex-col items-center justify-center ">
           <h1 className="font-mono text-2xl tracking-wide dark:text-white rounded-lg">
@@ -216,8 +217,9 @@ export default function Home() {
           </div>
         </div>
       </main> 
+      <MusicBox />
       <footer className="w-screen mt-8 bg-white p-2 border-t text-center text-sm text-gray-500 dark:text-white dark:bg-gray-800">
-          <p className="font-mono text-gray-500 dark:text-white">Osu Stats Compare v{version} | MIT Licensed</p>
+          <p className="font-mono text-gray-500 dark:text-white">Osu Stats Compare v{version} | MIT Licensed | Icon by @myceliumjester (TikTok)</p>
         </footer>
     </div>
   );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -15,7 +16,28 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Osu Stats Compare",
-  description: "Compares 2 players' osu! statistics",
+  description: "Compare osu! player's statistics side-by-side!",
+  openGraph: {
+    title: 'Osu Stats Compare',
+    description: "Compare osu! player's statistics side-by-side!",
+    url: 'https://osu-stats-compare.vercel.app/',
+    siteName: 'Osu Stats Compare',
+    images: [
+      {
+        url: 'https://osu-stats-compare.vercel.app/sitelogo.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Osu Stats Compare',
+    description: "Compare osu! player's statistics side-by-side!",
+    images: ['https://osu-stats-compare.vercel.app/sitelogo.png'],
+  },
 };
 
 export default function RootLayout({
@@ -29,7 +51,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         {children}
-        
+        <Analytics />
       </body>
     </html>
   );

@@ -96,7 +96,7 @@ const MusicBox = () => {
             </div>
             <div id="volume-slider" className='flex flex-row items-center gap-2'>
                 <img src={volIcon} alt='volume-icon' className='dark:invert'></img>
-                <input type="range" min="0" max="100" value={val} className='cursor-pointer accent-white' onChange={(e) => setVal(Number(e.target.value))}></input>
+                <input type="range" min="0" max="100" value={val} className='cursor-pointer accent-black dark:accent-white' onChange={(e) => setVal(Number(e.target.value))}></input>
             </div>
             <span style={{ width: `${duration}%` }} className="h-1 bg-pink-400 absolute bottom-0 left-0 "></span>
             <audio ref={audioRef} src={`/audio/${playlist[audioSrc]}.mp3`} onTimeUpdate={handleTimeUpdate} onEnded={nextSong}></audio>

@@ -87,7 +87,7 @@ const MusicBox = () => {
     };
 
     return (
-        <div id="music-container" className="absolute top-4 sm:right-0 overflow-hidden w-72 h-28 p-4 rounded-xl m-8 bg-gray-700 cursor-pointer border-white border-2 text-white font-mono text-sm flex items-center justify-center flex-col">
+        <div id="music-container" className="absolute top-4 sm:right-0 overflow-hidden w-72 h-28 p-4 rounded-xl m-8 bg-gray-200 text-black border-black dark:bg-gray-700 cursor-pointer dark:border-white border-2 dark:text-white font-mono text-sm flex items-center justify-center flex-col">
             <h1 className='text-center'>{playlist[audioSrc]}</h1>
             <div id="music-buttons" className='flex gap-4'>
                 <button id="audio-back-btn" onClick={prevSong}><img src="/skip-previous.svg" alt='audio-back' className='invert cursor-pointer'></img></button>

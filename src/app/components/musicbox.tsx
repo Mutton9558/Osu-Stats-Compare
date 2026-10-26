@@ -92,7 +92,7 @@ const MusicBox = () => {
             <div id="music-buttons" className='flex gap-4'>
                 <button id="audio-back-btn" onClick={prevSong}><img src="/skip-previous.svg" alt='audio-back' className='dark:invert cursor-pointer'></img></button>
                 <button id="audio-pause-btn" onClick={() => setPaused(!paused)}><img src={icon} alt='audio-play-status' className='dark:invert cursor-pointer'></img></button>
-                <button id="audio-next-btn" onClick={nextSong}><img src="/skip-next.svg" alt='audio-next' className='invert cursor-pointer'></img></button>
+                <button id="audio-next-btn" onClick={nextSong}><img src="/skip-next.svg" alt='audio-next' className='dark:invert cursor-pointer'></img></button>
             </div>
             <div id="volume-slider" className='flex flex-row items-center gap-2'>
                 <img src={volIcon} alt='volume-icon' className='invert'></img>

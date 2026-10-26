@@ -65,7 +65,7 @@ export default function UserStats({ user, comparisonData, resetUser }: UserStats
             />
             <div className="flex-1 z-10">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-xl font-semibold">{user.username}</h3>
+                <h3 className="text-xl font-semibold text-white">{user.username}</h3>
                 <Image
                   src={`https://flagcdn.com/w20/${user.countryCode.toLowerCase()}.png`}
                   alt="Country Flag"

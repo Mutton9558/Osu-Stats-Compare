@@ -75,7 +75,7 @@ export default function UserStats({ user, comparisonData, resetUser }: UserStats
                   title={user.countryCode.toUpperCase()}
                 />
               </div>
-              <div className="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-100 z-10">
+              <div className="flex items-center gap-4 text-xs text-gray-200 z-10">
                 <span>Level {user.level}</span>
                 <span>Joined {new Date(user.joinDate).getFullYear()}</span>
               </div>

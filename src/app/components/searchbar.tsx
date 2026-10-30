@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, RefreshCcw } from "lucide-react";
 
 type SearchBarProps = {
   onSearch: (username: string) => void;
@@ -42,22 +42,23 @@ const SearchBar = ({ onSearch, disableState }: SearchBarProps) => {
             }
             value={input}
             disabled={disableState}
-            className="text-xs sm:text-sm sm:w-auto md:text-base md:w-64 w-full text-left pl-2 pr-12 py-2 rounded-lg border border-gray-300 enabled:focus:outline-none focus:ring-2 enabled:focus:ring-gray-800 focus:border-transparent bg-white text-black disabled:bg-gray-300 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
+            className="text-xs sm:text-sm sm:w-auto md:text-base md:w-64 w-full text-left pl-2 pr-12 py-2 rounded-xl border border-gray-300 enabled:focus:outline-none focus:ring-2 enabled:focus:ring-gray-800 focus:border-transparent bg-white text-black disabled:bg-gray-300 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
           />
         </div>
         <button
           onClick={() => handleSearch(input)}
           disabled={disableState}
-          className="px-0.5 sm:px-2 md:px-5 border-2 border-black rounded-lg bg-black enabled:hover:bg-gray-800 enabled:hover:shadow-lg enabled:hover:shadow-gray-600 text-white cursor-pointer disabled:bg-gray-300 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
+          className="px-0.5 sm:px-2 md:px-5 border-2 border-black rounded-xl bg-black enabled:hover:bg-gray-800 enabled:hover:shadow-lg enabled:hover:shadow-gray-600 text-white cursor-pointer disabled:bg-gray-300 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
         >
-          <div className="text-xs sm:text-sm md:text-lg gap-2">
+          <div className="text-xs sm:text-sm md:text-lg flex items-center gap-2">
             {
               disableState ?
-              <p>Searching...</p> :
-                <div className="w-full p-0 m-0 h-full flex flex-row items-center">
-                  <Plus className="w-0 h-0 sm:w-3 sm:h-3 md:w-5 md:h-5" />
-                  Add Player
-                </div>
+              <RefreshCcw className="w-4 h-4 sm:w-3 sm:h-3 md:w-5 md:h-5 animate-spin" /> :
+                <Plus className="w-4 h-4 sm:w-3 sm:h-3 md:w-5 md:h-5" />
+            }
+            {
+              disableState ?
+              "Searching..." : "Add Player"
             }
           </div>
         </button>

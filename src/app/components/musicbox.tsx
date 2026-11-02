@@ -18,16 +18,32 @@ const MusicBox = () => {
     const [icon, setIcon] = useState("/play.svg")
     const [audioSrc, setAudioSrc] = useState(0);
     const [volIcon, setVolIcon] = useState("volume-full.svg")
-    const [toggle, setToggle] = useState(false);
+    const [toggle, setToggle] = useState(true);
     const [openToggle, setOpenToggle] = useState("music.svg");
     const [closeToggle, setCloseToggle] = useState("close.svg");
 
     const audioRef = useRef<HTMLAudioElement>(null);
 
+    const updatePaused = () => {
+        if(paused){
+            setIcon("/play.svg");
+            if(audioRef){
+                audioRef.current?.pause();
+            }
+        } else {
+            setIcon("/pause.svg");
+            if(audioRef){
+                audioRef.current?.play();
+            }
+        }
+    } 
+
     const nextSong = () => {
         if(audioRef) {
             if(audioRef.current){
                 setAudioSrc((prevIndex) => (prevIndex + 1) % playlist.length);
+                setPaused(false);
+                updatePaused();
             }
         }
     };
@@ -37,10 +53,13 @@ const MusicBox = () => {
             if(audioRef.current){
                 if(audioRef.current.currentTime < 3){
                     setAudioSrc((prevIndex) => (prevIndex - 1 + playlist.length) % playlist.length);
+                    
                 } else {
                     audioRef.current.currentTime = 0;
                     audioRef.current.play();
                 }
+                setPaused(false);
+                updatePaused();
             }
         }
     };
@@ -55,18 +74,7 @@ const MusicBox = () => {
     }, [audioSrc]);
 
     useEffect(() => {
-
-        if(paused){
-            setIcon("/play.svg");
-            if(audioRef){
-                audioRef.current?.pause();
-            }
-        } else {
-            setIcon("/pause.svg");
-            if(audioRef){
-                audioRef.current?.play();
-            }
-        }
+        updatePaused();
     }, [paused])
 
     useEffect(() => {
@@ -91,8 +99,8 @@ const MusicBox = () => {
     };
 
     return (
-        <div id="music-player-container" className={`sticky top-4 right-3 md:right-5 ${toggle ? "w-full max-w-sm md:w-72 h-28 md:h-35 px-4 pt-6 pb-4" : "p-4"} mx-auto mr-0 z-50 overflow-hidden bg-gray-200 text-black rounded-xl border-black dark:bg-gray-700 dark:border-white border-3 dark:text-white font-mono text-sm shadow-md flex items-center justify-center flex-col gap-1`}>
-            <audio ref={audioRef} src={`/audio/${playlist[audioSrc]}.mp3`} onTimeUpdate={handleTimeUpdate} onEnded={nextSong}></audio>
+        <div id="music-player-container" className={`sticky top-4 right-3 md:right-5 ${toggle ? "w-full max-w-sm md:w-72 h-28 md:h-35 px-4 pt-6 pb-4" : ""} mx-auto mr-0 z-50 overflow-hidden bg-gray-200 text-black rounded-xl border-black dark:bg-gray-700 dark:border-white border-3 dark:text-white font-mono text-sm shadow-md flex items-center justify-center flex-col gap-1`}>
+            <audio ref={audioRef} src={`/audio/${encodeURIComponent(playlist[audioSrc])}.mp3`} preload="auto" onTimeUpdate={handleTimeUpdate} onEnded={nextSong}></audio>
             { toggle ?
             <>
                 <button onClick={() => setToggle(false)} className='absolute top-2 right-4 cursor-pointer'>
@@ -111,7 +119,7 @@ const MusicBox = () => {
                 <span style={{ width: `${duration}%` }} className="h-1 bg-pink-400 absolute bottom-0 left-0 "></span>
             </>
             :
-            <button onClick={() => setToggle(true)} className='flex flex-col items-center gap-2 cursor-pointer'>
+            <button onClick={() => setToggle(true)} className='flex flex-col items-center gap-2 cursor-pointer min-w-full min-h-full p-4'>
                 <Music className='w-6 h-6 stroke-3'/>
             </button>
             }

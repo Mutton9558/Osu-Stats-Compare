@@ -42,8 +42,10 @@ const MusicBox = () => {
         if(audioRef) {
             if(audioRef.current){
                 setAudioSrc((prevIndex) => (prevIndex + 1) % playlist.length);
-                setPaused(false);
-                updatePaused();
+                if(paused){
+                    setPaused(false);
+                    updatePaused();
+                }
             }
         }
     };
@@ -56,10 +58,12 @@ const MusicBox = () => {
                     
                 } else {
                     audioRef.current.currentTime = 0;
-                    audioRef.current.play();
                 }
-                setPaused(false);
-                updatePaused();
+                
+                if(paused){
+                    setPaused(false);
+                    updatePaused();
+                }
             }
         }
     };

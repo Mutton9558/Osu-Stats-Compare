@@ -4,6 +4,7 @@ import SearchBar from "./components/searchbar";
 import UserStats from "./components/userstats";
 import { version } from "../../package.json"
 import MusicBox from "./components/musicbox";
+import ChangelogPopUp from "./components/changelog";
 
 export default function Home() {
   interface userStatistics {
@@ -184,6 +185,7 @@ export default function Home() {
 
   return (
     <div className="relative font-sans flex flex-col items-center justify-center min-h-screen overflow-hidden">
+      <ChangelogPopUp />
       <MusicBox />
       <main className="pt-8 pb-12 flex flex-col gap-[16px] flex-1 justify-center items-center sm:items-start w-full px-4">
         <div className="w-full flex flex-col items-center justify-center ">
